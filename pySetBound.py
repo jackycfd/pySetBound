@@ -14,14 +14,12 @@ import re
 typeNames=['patch','symmetryPlane','empty','wedge','cyclic','wall']
 
 def hasPhysicalType(string):
-    """To judge whether the string has a latex element lobj"""
     if 'physicalType' in string:
         return (True)
     else:
         return (False)
 
 def hasType(string):
-    """To judge whether the string has a latex element lobj"""
     if 'type' in string:
         return (True)
     else:
@@ -49,9 +47,6 @@ class Main:
             print "wrong arguments"
             sys.exit()
 
-        #for arg in sys.argv:
-            #print arg
-
         sourceBound=sys.argv[numArgv-1]
         targetType=sys.argv[numArgv-2]
         targetType=targetType.replace('-','')
@@ -68,33 +63,24 @@ class Main:
         totalSourceFileLine=file.readlines()
         file.close()
 
-        #print self.totalSourceFileLine
         length=len(totalSourceFileLine)
-        #print "Number of lines=%d" %(length)
-        
+
         start=0
         end=0
-        #look for back boundary
+        #look for sourceBound
         for i in range(0,length):
             line=totalSourceFileLine[i]
             if hasBound(sourceBound,line):
                 start=i
-                #print line
-                #print "start=%d" %(start)
-            if hasBound('}',line) and start>0:
+             if hasBound('}',line) and start>0:
                 end=i
                 break
-                #print "end=%d" %(end)
-                #print line
-                #print repr(line)
 
         print "start=%d end=%d" %(start,end)
         if start==0 or end==0:
             print "Warning!!!!"
             print "The bound <<%s>> is not found in the file"  %(sourceBound)
             sys.exit()
-        #for i in range(start,end+1):
-        #    print repr(totalSourceFileLine[i])
 
         for i in range(0,length):
             if hasPhysicalType(totalSourceFileLine[i]):
@@ -105,7 +91,7 @@ class Main:
                 totalSourceFileLine[i]='\ttype\t\t'+targetType+';\n'
 
             
-        #output new boundary
+        #overwrite the file boundary under "./constant/polyMesh/boundary"
         file=open(self.targetFileName,"w")
         file.writelines(totalSourceFileLine)
         file.close()
