@@ -2,7 +2,7 @@
 A simple python script used to set boundary conditions of patch for OpenFOAM
 
 #usage
-pySetBound.py <<type>> <<boundName>>
+pySetBound.py type  boundName
 
 #example
 pySetBound.py -empty front
